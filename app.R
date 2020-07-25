@@ -25,7 +25,10 @@ ui <- dashboardPage(
                               icon = icon("line-chart"))),
                    sidebarMenu(
                      menuItem("Animated graphs", tabName = "animatedgraphs", 
-                              icon = icon("spinner")))
+                              icon = icon("spinner"))),
+                   sidebarMenu(
+                     menuItem("Source code", icon = icon("file-code-o"), 
+                              href = "https://github.com/rnnh/covidgraphics"))
                    ),
   
   # Body
@@ -39,7 +42,7 @@ ui <- dashboardPage(
                     "Enter the 3 letter ISO code for a country to display its
                     covid-19 data.", br(),
                     "Country codes must be in capitals, and separated with 
-                    commas.", br(),
+                    spaces.", br(),
                     "Use the slider to select the date range to display.", br(),
                     textInput("countries_lc", "3 letter ISO country codes",
                               "USA BRA RUS PER ITA"),
@@ -68,7 +71,7 @@ ui <- dashboardPage(
                     "Enter the 3 letter ISO code for a country to display its
                     covid-19 data.", br(),
                     "Country codes must be in capitals, and separated with 
-                    commas.", br(),
+                    spaces.", br(),
                     "Use the slider to select the date range to display.", br(),
                     sliderInput(inputId = "date", label = "Date range",
                                 min = min(covid19.df$date),

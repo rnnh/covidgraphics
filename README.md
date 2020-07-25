@@ -1,10 +1,9 @@
 # [Covidgraphics](https://github.com/rnnh/covidgraphics)
+by [Ronan Harrington](https://github.com/rnnh/)
 
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/rnnh/covidgraphics)
 ![GitHub repo size](https://img.shields.io/github/repo-size/rnnh/covidgraphics)
 ![GitHub](https://img.shields.io/github/license/rnnh/covidgraphics)
-
-by [Ronan Harrington](https://github.com/rnnh/)
 
 This is a [Shiny](https://shiny.rstudio.com/) app written in `R` that creates graphs using international Covid-19 data, which can also be run locally.
 `R` version 4.0.2 or later and RStudio version 1.3.959 or later are required to run this app locally.

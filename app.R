@@ -65,7 +65,8 @@ ui <- dashboardPage(
               fluidRow(
                 box(title = "Covid-19 animated graph controls",
                     'This animated graph will update according to these inputs 
-                    when the "Create animated graph" below is pressed.', br(),
+                    when the "Create animated graph" button below is pressed.',
+                    br(),
                     "This graph will take a few moments to render, please be 
                     patient.", br(),
                     "Enter the 3 letter ISO code for a country to display its

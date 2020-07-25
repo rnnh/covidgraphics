@@ -53,12 +53,12 @@ ui <- dashboardPage(
                                           max(covid19.df$date)), step = 1))
                 ),
               fluidRow(
-                box(plotOutput("lp_death_time")),
-                box(plotOutput("lp_case_time"))
+                box(plotOutput("lp_case_time")),
+                box(plotOutput("lp_case_time_pc"))
               ),
               fluidRow(
-                box(plotOutput("lp_death_time_pc")),
-                box(plotOutput("lp_case_time_pc"))
+                box(plotOutput("lp_death_time")),
+                box(plotOutput("lp_death_time_pc"))
               )),
       
       tabItem(tabName = "animatedgraphs",

@@ -38,12 +38,12 @@ ui <- dashboardPage(
               fluidRow(
                 box(title = "COVID-19 graph controls",
                     "The graphs below will update automatically according to
-                    these inputs.", br(),
+                    these inputs.",
                     "Enter the 3 letter ISO code for a country to display its
-                    covid-19 data.", br(),
+                    COVID-19 data.",
                     "Country codes must be in capitals, and separated with 
-                    spaces.", br(),
-                    "Use the slider to select the date range to display.", br(),
+                    spaces.",
+                    "Use the slider to select the date range to display.",
                     textInput("countries_lc", "3 letter ISO country codes",
                               "USA BRA RUS PER ITA"),
                     sliderInput(inputId = "date_lc", label = "Date range",
@@ -66,14 +66,13 @@ ui <- dashboardPage(
                 box(title = "COVID-19 animated graph controls",
                     'This animated graph will update according to these inputs 
                     when the "Create animated graph" button below is pressed.',
-                    br(),
                     "This graph will take a few moments to render, please be 
-                    patient.", br(),
+                    patient.",
                     "Enter the 3 letter ISO code for a country to display its
-                    covid-19 data.", br(),
+                    COVID-19 data.",
                     "Country codes must be in capitals, and separated with 
-                    spaces.", br(),
-                    "Use the slider to select the date range to display.", br(),
+                    spaces.",
+                    "Use the slider to select the date range to display.",
                     sliderInput(inputId = "date", label = "Date range",
                                 min = min(covid19.df$date),
                                 max = max(covid19.df$date), 

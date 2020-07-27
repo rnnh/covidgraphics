@@ -9,7 +9,7 @@ library(COVID19)
 library(gifski)
 library(shiny)
 
-# Loading Covid-19 data
+# Loading COVID-19 data
 covid19.df <- as.data.frame(covid19(verbose = FALSE))
 
 # Defining shiny user interface function
@@ -36,7 +36,7 @@ ui <- dashboardPage(
     tabItems(
       tabItem(tabName = "linecharts",
               fluidRow(
-                box(title = "Covid-19 graph controls",
+                box(title = "COVID-19 graph controls",
                     "The graphs below will update automatically according to
                     these inputs.", br(),
                     "Enter the 3 letter ISO code for a country to display its
@@ -63,7 +63,7 @@ ui <- dashboardPage(
       
       tabItem(tabName = "animatedgraphs",
               fluidRow(
-                box(title = "Covid-19 animated graph controls",
+                box(title = "COVID-19 animated graph controls",
                     'This animated graph will update according to these inputs 
                     when the "Create animated graph" button below is pressed.',
                     br(),
@@ -83,7 +83,7 @@ ui <- dashboardPage(
                               "USA BRA RUS PER ITA"),
                     actionButton('goPlot', 'Create animated graph (please wait)')
                 ),
-                box(title = "Covid-19: Cases vs. Deaths",
+                box(title = "COVID-19: Cases vs. Deaths",
                     plotOutput("gifPlot", height = 600)
                     ))
               )
@@ -95,7 +95,7 @@ ui <- dashboardPage(
 # Define shiny server function
 server <- function(input, output) {
   
-  # Function to create Covid-19 subsets in reaction to inputs
+  # Function to create COVID-19 subsets in reaction to inputs
   covid19_reactive <- reactive({
     country_codes <- unlist(strsplit(input$countries_lc, " "))
     covid19_countries.df <- covid19.df[covid19.df$id %in% country_codes, ]
@@ -104,7 +104,7 @@ server <- function(input, output) {
         covid19_countries.df$date <= input$date_lc[2], ]
   })
   
-  # Function to create Covid-19 subsets in response to a button press
+  # Function to create COVID-19 subsets in response to a button press
   covid19_button <- eventReactive(input$goPlot, {
     country_codes <- unlist(strsplit(input$countries, " "))
     covid19_countries.df <- covid19.df[covid19.df$id %in% country_codes, ]
@@ -119,7 +119,7 @@ server <- function(input, output) {
     ggplot(covid19_timeframe.df, aes(x = date, y = deaths, color = id)) +
       geom_line() + 
       geom_point() +
-      labs(title = "Covid-19: Deaths vs. Time",
+      labs(title = "COVID-19: Deaths vs. Time",
            x = "Time",
            y = "Deaths",
            color = "Country") +
@@ -134,7 +134,7 @@ server <- function(input, output) {
                                      color = id)) +
       geom_line() + 
       geom_point() +
-      labs(title = "Covid-19: Cases vs. Time",
+      labs(title = "COVID-19: Cases vs. Time",
            x = "Time",
            y = "Cases",
            color = "Country") +
@@ -148,7 +148,7 @@ server <- function(input, output) {
                                      color = id)) +
       geom_line() + 
       geom_point() +
-      labs(title = "Covid-19: Deaths per capita vs. Time",
+      labs(title = "COVID-19: Deaths per capita vs. Time",
            x = "Time",
            y = "Deaths per capita",
            color = "Country") +
@@ -164,7 +164,7 @@ server <- function(input, output) {
       color = id)) +
       geom_line() + 
       geom_point() +
-      labs(title = "Covid-19: Cases per capita vs. Time",
+      labs(title = "COVID-19: Cases per capita vs. Time",
            x = "Time",
            y = "Cases per capita",
            color = "Country") +
@@ -186,7 +186,7 @@ server <- function(input, output) {
       geom_point() +
       theme_bw() +
       theme(text = element_text(size = 16)) +
-      labs(title = "Covid-19: Cases vs. Deaths",
+      labs(title = "COVID-19: Cases vs. Deaths",
            subtitle = "Points scaled to population. Date: {frame_time}",
            x = "Confirmed cases per capita",
            y = "Deaths per capita",
@@ -204,7 +204,7 @@ server <- function(input, output) {
     # List containing the GIF filename
     list(src = "outfile.gif",
          contentType = "image/gif",
-         alt = "Covid-19: Cases vs Deaths"
+         alt = "COVID-19: Cases vs Deaths"
     )}, deleteFile = TRUE)
   
 }

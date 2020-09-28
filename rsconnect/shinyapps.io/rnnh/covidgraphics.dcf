@@ -1,0 +1,10 @@
+name: covidgraphics
+title:
+username:
+account: rnnh
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2610562
+bundleId: 3680969
+url: https://rnnh.shinyapps.io/covidgraphics/
+when: 1601334474.49409

@@ -19,7 +19,7 @@ ui <- dashboardPage(
   dashboardHeader(title = "covidgraphics"),
   
   # Sidebar
-  dashboardSidebar(collapsed = TRUE,
+  dashboardSidebar(collapsed = FALSE,
                    sidebarMenu(
                      menuItem("Line charts", tabName = "linecharts", 
                               icon = icon("line-chart"))),
@@ -49,7 +49,7 @@ ui <- dashboardPage(
                     sliderInput(inputId = "date_lc", label = "Date range",
                                 min = min(covid19.df$date),
                                 max = max(covid19.df$date), 
-                                value = c(max(covid19.df$date) - 60,
+                                value = c(max(covid19.df$date) - 180,
                                           max(covid19.df$date)), step = 1))
                 ),
               fluidRow(
@@ -76,19 +76,20 @@ ui <- dashboardPage(
                     sliderInput(inputId = "date", label = "Date range",
                                 min = min(covid19.df$date),
                                 max = max(covid19.df$date), 
-                                value = c(max(covid19.df$date) - 60,
+                                value = c(max(covid19.df$date) - 180,
                                           max(covid19.df$date)), step = 1),
                     textInput("countries", "Select countries (ISO codes)",
                               "USA BRA RUS PER ITA"),
                     actionButton('goPlot', 'Create animated graph (please wait)')
-                ),
-                box(title = "COVID-19: Cases vs. Deaths",
+                )),
+              fluidRow(
+                box(title = "Animated Scatter Plot",
                     plotOutput("gifPlot", height = 600)
                     ))
-              )
-      )
-    )
-  )
+              ) # tabItem()
+      ) # tabItems()
+      ) # dashboardBody()
+  ) # dashboardPage()
 
 
 # Define shiny server function
@@ -115,7 +116,8 @@ server <- function(input, output) {
   # Line plot: deaths vs. time
   output$lp_death_time <- renderPlot({
     covid19_timeframe.df <- covid19_reactive()
-    ggplot(covid19_timeframe.df, aes(x = date, y = deaths, color = id)) +
+    ggplot(covid19_timeframe.df, aes(x = date, y = deaths,
+                                     color = administrative_area_level_1)) +
       geom_line() + 
       geom_point() +
       labs(title = "COVID-19: Deaths vs. Time",
@@ -130,7 +132,7 @@ server <- function(input, output) {
     covid19_timeframe.df <- covid19_reactive()
     ggplot(covid19_timeframe.df, aes(x = date,
                                      y = confirmed - (deaths + recovered),
-                                     color = id)) +
+                                     color = administrative_area_level_1)) +
       geom_line() + 
       geom_point() +
       labs(title = "COVID-19: Cases vs. Time",
@@ -140,55 +142,56 @@ server <- function(input, output) {
       theme_bw() +
       theme(text = element_text(size = 16))})
   
-  # Line plot: deaths per capita vs. time
+  # Line plot: deaths per 100,000 population vs. time
   output$lp_death_time_pc <- renderPlot({
     covid19_timeframe.df <- covid19_reactive()
-    ggplot(covid19_timeframe.df, aes(x = date, y = deaths / population,
-                                     color = id)) +
+    ggplot(covid19_timeframe.df, aes(x = date, y = (deaths / population) * 100000,
+                                     color = administrative_area_level_1)) +
       geom_line() + 
       geom_point() +
-      labs(title = "COVID-19: Deaths per capita vs. Time",
+      labs(title = "COVID-19: Deaths per 100,000 Population vs. Time",
            x = "Time",
-           y = "Deaths per capita",
+           y = "Deaths per 100,000 Population",
            color = "Country") +
       theme_bw() +
       theme(text = element_text(size = 16))})
   
-  # Line plot: cases per capita vs. time
+  # Line plot: cases per 100,000 population vs. time
   output$lp_case_time_pc <- renderPlot({
     covid19_timeframe.df <- covid19_reactive()
     ggplot(covid19_timeframe.df, aes(
       x = date,
-      y = (confirmed - (deaths + recovered)) / population,
-      color = id)) +
+      y = ((confirmed - (deaths + recovered)) / population) * 100000,
+      color = administrative_area_level_1)) +
       geom_line() + 
       geom_point() +
-      labs(title = "COVID-19: Cases per capita vs. Time",
+      labs(title = "COVID-19: Cases per 100,000 Population vs. Time",
            x = "Time",
-           y = "Cases per capita",
+           y = "Cases per 100,000 Population",
            color = "Country") +
       theme_bw() +
       theme(text = element_text(size = 16))})
-  
-  # Animated plot: cases per capita vs. deaths per capita
+
+  # Animated plot: Scatter plot
   output$gifPlot <- renderImage({
     covid19_timeframe.df <- covid19_button()
     
     outfile <- tempfile(fileext='.gif')
     
     attach(covid19_timeframe.df)
-    x <- confirmed / population
-    y <- deaths / population
+    x <- (deaths / population) * 100000
+    y <- ((confirmed - (deaths + recovered)) / population) * 100000
     detach(covid19_timeframe.df)
     
-    p <- ggplot(covid19_timeframe.df, aes(x, y, size = population, color = id)) +
+    p <- ggplot(covid19_timeframe.df, aes(x, y, size = population,
+                                          color = administrative_area_level_1)) +
       geom_point() +
       theme_bw() +
       theme(text = element_text(size = 16)) +
-      labs(title = "COVID-19: Cases vs. Deaths",
+      labs(title = "COVID-19: Cases vs. Deaths per 100,000 Population",
            subtitle = "Points scaled to population. Date: {frame_time}",
-           x = "Confirmed cases per capita",
-           y = "Deaths per capita",
+           x = "Deaths per 100,000 Population",
+           y = "Confirmed cases per 100,000 Population",
            color = "Country") +
       guides(size = FALSE) +
       transition_time(date) +
@@ -205,7 +208,7 @@ server <- function(input, output) {
          contentType = "image/gif",
          alt = "COVID-19: Cases vs Deaths"
     )}, deleteFile = TRUE)
-  
+
 }
 
 # Run the application

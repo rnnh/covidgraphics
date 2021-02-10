@@ -131,7 +131,7 @@ server <- function(input, output) {
   output$lp_case_time <- renderPlot({
     covid19_timeframe.df <- covid19_reactive()
     ggplot(covid19_timeframe.df, aes(x = date,
-                                     y = confirmed - (deaths + recovered),
+                                     y = confirmed,
                                      color = administrative_area_level_1)) +
       geom_line() + 
       geom_point() +
@@ -161,7 +161,7 @@ server <- function(input, output) {
     covid19_timeframe.df <- covid19_reactive()
     ggplot(covid19_timeframe.df, aes(
       x = date,
-      y = ((confirmed - (deaths + recovered)) / population) * 100000,
+      y = (confirmed / population) * 100000,
       color = administrative_area_level_1)) +
       geom_line() + 
       geom_point() +
@@ -180,7 +180,7 @@ server <- function(input, output) {
     
     attach(covid19_timeframe.df)
     x <- (deaths / population) * 100000
-    y <- ((confirmed - (deaths + recovered)) / population) * 100000
+    y <- (confirmed / population) * 100000
     detach(covid19_timeframe.df)
     
     p <- ggplot(covid19_timeframe.df, aes(x, y, size = population,

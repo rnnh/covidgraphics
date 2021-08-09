@@ -53,11 +53,11 @@ ui <- dashboardPage(
                                           max(covid19.df$date)), step = 1))
                 ),
               fluidRow(
-                box(plotOutput("lp_case_time")),
-                box(plotOutput("lp_case_time_pc"))
+                box(plotOutput("lp_case_time_pc")),
+                box(plotOutput("lp_vaccines_time_pc"))
               ),
               fluidRow(
-                box(plotOutput("lp_death_time")),
+                box(plotOutput("lp_hosp_time_pc")),
                 box(plotOutput("lp_death_time_pc"))
               )),
       
@@ -113,35 +113,6 @@ server <- function(input, output) {
         covid19_countries.df$date <= input$date[2], ]
   })
   
-  # Line plot: deaths vs. time
-  output$lp_death_time <- renderPlot({
-    covid19_timeframe.df <- covid19_reactive()
-    ggplot(covid19_timeframe.df, aes(x = date, y = deaths,
-                                     color = administrative_area_level_1)) +
-      geom_line() + 
-      geom_point() +
-      labs(title = "COVID-19: Deaths vs. Time",
-           x = "Time",
-           y = "Deaths",
-           color = "Country") +
-      theme_bw() +
-      theme(text = element_text(size = 16))})
-  
-  # Line plot: cases vs. time
-  output$lp_case_time <- renderPlot({
-    covid19_timeframe.df <- covid19_reactive()
-    ggplot(covid19_timeframe.df, aes(x = date,
-                                     y = confirmed,
-                                     color = administrative_area_level_1)) +
-      geom_line() + 
-      geom_point() +
-      labs(title = "COVID-19: Cases vs. Time",
-           x = "Time",
-           y = "Cases",
-           color = "Country") +
-      theme_bw() +
-      theme(text = element_text(size = 16))})
-  
   # Line plot: deaths per 100,000 population vs. time
   output$lp_death_time_pc <- renderPlot({
     covid19_timeframe.df <- covid19_reactive()
@@ -149,7 +120,7 @@ server <- function(input, output) {
                                      color = administrative_area_level_1)) +
       geom_line() + 
       geom_point() +
-      labs(title = "COVID-19: Deaths per 100,000 Population vs. Time",
+      labs(title = "COVID-19: Deaths per 100,000 vs. Time",
            x = "Time",
            y = "Deaths per 100,000 Population",
            color = "Country") +
@@ -165,9 +136,41 @@ server <- function(input, output) {
       color = administrative_area_level_1)) +
       geom_line() + 
       geom_point() +
-      labs(title = "COVID-19: Cases per 100,000 Population vs. Time",
+      labs(title = "COVID-19: Cases per 100,000 vs. Time",
            x = "Time",
            y = "Cases per 100,000 Population",
+           color = "Country") +
+      theme_bw() +
+      theme(text = element_text(size = 16))})
+  
+  # Line plot: vaccinations per 100,000 population vs. time
+  output$lp_vaccines_time_pc <- renderPlot({
+    covid19_timeframe.df <- covid19_reactive()
+    ggplot(covid19_timeframe.df, aes(
+      x = date,
+      y = (vaccines / population) * 100000,
+      color = administrative_area_level_1)) +
+      geom_line() + 
+      geom_point() +
+      labs(title = "COVID-19: Vaccinations per 100,000 vs. Time",
+           x = "Time",
+           y = "Vaccinations per 100,000 Population",
+           color = "Country") +
+      theme_bw() +
+      theme(text = element_text(size = 16))})
+  
+  # Line plot: hospitalisations per 100,000 population vs. time
+  output$lp_hosp_time_pc <- renderPlot({
+    covid19_timeframe.df <- covid19_reactive()
+    ggplot(covid19_timeframe.df, aes(
+      x = date,
+      y = (hosp / population) * 100000,
+      color = administrative_area_level_1)) +
+      geom_line() + 
+      geom_point() +
+      labs(title = "COVID-19: Hospitalisations per 100,000 vs. Time",
+           x = "Time",
+           y = "Hospitalisations per 100,000 Population",
            color = "Country") +
       theme_bw() +
       theme(text = element_text(size = 16))})

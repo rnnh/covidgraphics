@@ -5,6 +5,7 @@ account: rnnh
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2610562
-bundleId: 4207870
+bundleId: 5487047
 url: https://rnnh.shinyapps.io/covidgraphics/
-when: 1613000842.39824
+when: 1642635453.32873
+lastSyncTime: 1642635453.32873

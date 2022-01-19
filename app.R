@@ -10,7 +10,7 @@ library(gifski)
 library(shiny)
 
 # Loading COVID-19 data
-covid19.df <- as.data.frame(covid19(verbose = FALSE))
+covid19_df <- as.data.frame(covid19(verbose = FALSE))
 
 # Defining shiny user interface function
 ui <- dashboardPage(
@@ -47,10 +47,10 @@ ui <- dashboardPage(
                     textInput("countries_lc", "3 letter ISO country codes",
                               "USA BRA RUS PER ITA"),
                     sliderInput(inputId = "date_lc", label = "Date range",
-                                min = min(covid19.df$date),
-                                max = max(covid19.df$date), 
-                                value = c(max(covid19.df$date) - 180,
-                                          max(covid19.df$date)), step = 1))
+                                min = min(covid19_df$date),
+                                max = max(covid19_df$date), 
+                                value = c(max(covid19_df$date) - 180,
+                                          max(covid19_df$date)), step = 1))
                 ),
               fluidRow(
                 box(plotOutput("lp_case_time_pc")),
@@ -74,10 +74,10 @@ ui <- dashboardPage(
                     spaces.",
                     "Use the slider to select the date range to display.",
                     sliderInput(inputId = "date", label = "Date range",
-                                min = min(covid19.df$date),
-                                max = max(covid19.df$date), 
-                                value = c(max(covid19.df$date) - 180,
-                                          max(covid19.df$date)), step = 1),
+                                min = min(covid19_df$date),
+                                max = max(covid19_df$date), 
+                                value = c(max(covid19_df$date) - 180,
+                                          max(covid19_df$date)), step = 1),
                     textInput("countries", "Select countries (ISO codes)",
                               "USA BRA RUS PER ITA"),
                     actionButton('goPlot', 'Create animated graph (please wait)')
@@ -98,7 +98,7 @@ server <- function(input, output) {
   # Function to create COVID-19 subsets in reaction to inputs
   covid19_reactive <- reactive({
     country_codes <- unlist(strsplit(input$countries_lc, " "))
-    covid19_countries.df <- covid19.df[covid19.df$id %in% country_codes, ]
+    covid19_countries.df <- covid19_df[covid19_df$id %in% country_codes, ]
     covid19_subset.df <- covid19_countries.df[
       covid19_countries.df$date >= input$date_lc[1] &
         covid19_countries.df$date <= input$date_lc[2], ]
@@ -107,7 +107,7 @@ server <- function(input, output) {
   # Function to create COVID-19 subsets in response to a button press
   covid19_button <- eventReactive(input$goPlot, {
     country_codes <- unlist(strsplit(input$countries, " "))
-    covid19_countries.df <- covid19.df[covid19.df$id %in% country_codes, ]
+    covid19_countries.df <- covid19_df[covid19_df$id %in% country_codes, ]
     covid19_subset.df <- covid19_countries.df[
       covid19_countries.df$date >= input$date[1] &
         covid19_countries.df$date <= input$date[2], ]

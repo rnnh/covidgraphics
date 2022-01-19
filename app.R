@@ -98,7 +98,7 @@ server <- function(input, output) {
   # Function to create COVID-19 subsets in reaction to inputs
   covid19_reactive <- reactive({
     country_codes <- unlist(strsplit(input$countries_lc, " "))
-    covid19_countries.df <- covid19_df[covid19_df$id %in% country_codes, ]
+    covid19_countries.df <- covid19_df[covid19_df$iso_alpha_3 %in% country_codes, ]
     covid19_subset.df <- covid19_countries.df[
       covid19_countries.df$date >= input$date_lc[1] &
         covid19_countries.df$date <= input$date_lc[2], ]
@@ -107,7 +107,7 @@ server <- function(input, output) {
   # Function to create COVID-19 subsets in response to a button press
   covid19_button <- eventReactive(input$goPlot, {
     country_codes <- unlist(strsplit(input$countries, " "))
-    covid19_countries.df <- covid19_df[covid19_df$id %in% country_codes, ]
+    covid19_countries.df <- covid19_df[covid19_df$iso_alpha_3 %in% country_codes, ]
     covid19_subset.df <- covid19_countries.df[
       covid19_countries.df$date >= input$date[1] &
         covid19_countries.df$date <= input$date[2], ]
